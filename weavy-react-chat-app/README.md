@@ -1,7 +1,7 @@
 # Adding URL Previews to Chat
 
 This demo projects provides an insight on how to build a Chat application that is powered by the Weavy API and displays a URL preview through the use of a Weavy Embed entity. 
-Read the Adding URL Previews to Chat article published on the Weavy developer blog. 
+Read the Adding URL Previews to Chat article published on the Weavy developer blog. The chat application is styled using TailwindCSS. 
 
 ## Steps To Run: 
 

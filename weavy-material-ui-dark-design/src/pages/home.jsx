@@ -10,27 +10,31 @@ const useStyles = makeStyles((theme) => ({
     messagesContainer: {
         height: "calc(100vh - 170px)",
         overflow: "auto",
-        border: "1px solid #000",
-        background: "#d4d4d8"
     },
     container: {
         maxWidth: "650px",
         margin: "auto",
     },
     messageWindow: {
+        background: theme.palette.custom.main,
         padding: "0 12px"
     },
     messageInput: {
         width: "100%",
         padding: "12px",
+        background: theme.palette.surface.main,
+        color: theme.palette.text.primary,
         outline: 0,
     },
     inputContainer: {
+        background: theme.palette.surface.main,
     },
     sendIcon: {
         margin: "0 12px",
         fontSize: "34px",
+        color: theme.palette.text.primary,
         placeItems: "center",
+
         "&:hover": {
             cursor: "pointer"
         }
@@ -39,13 +43,14 @@ const useStyles = makeStyles((theme) => ({
         height: "60px",
         width: "100%",
         display: "flex",
-        marginBottom: "30px",
-        background: "#fff"
+        border: `1px solid ${theme.palette.text.primary}`,
+        marginBottom: "30px"
     }
 }));
 
 function Home() {
     const {retrievedChats, submitChatMessage, chatMessageText, actionDispatcher} = useContext(AppContext)
+
     const classes = useStyles();
 
     return (
@@ -53,9 +58,8 @@ function Home() {
             height={"100vh"}
             display={"flex"}
             width={"100%"}
-            border={"1px solid #000"}
             sx={{
-                bgcolor: "#e2e8f0",
+                bgcolor: "background.default",
             }}
             className={classes.page}
             justifyContent={"center"}

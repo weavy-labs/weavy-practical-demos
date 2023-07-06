@@ -2,7 +2,9 @@ import React from "react";
 import {AiOutlineLink} from "react-icons/ai";
 import {Box, Typography} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import {truncateText} from "../utils/helpers.js";
+
+const truncateText = (text, length) =>
+    text.split(" ").slice(0, length).join(" ");
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -10,11 +12,14 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         margin: "34px 8px 0 8px",
+        background: theme.palette.background.default,
         borderRadius: "8px"
     },
     text: {
+        color: theme.palette.text.primary
     },
     previewContainer: {
+        background: theme.palette.surface.main,
     },
     image: {
         width: "150px",

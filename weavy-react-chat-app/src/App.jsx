@@ -1,13 +1,10 @@
-import { ThemeProvider } from "@mui/material";
+import React from "react";
 import Home from "./pages/home";
-import { theme } from "./utils/theme";
 
 function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <Home />
-    </ThemeProvider>
-  );
+    return (
+       <Home/>
+    );
 }
 
 export default App;

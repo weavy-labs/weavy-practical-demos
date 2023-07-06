@@ -1,57 +1,73 @@
 import React from "react";
-import { AiOutlineLink } from "react-icons/ai";
-import { Box, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import {AiOutlineLink} from "react-icons/ai";
+import {Box, Typography} from "@mui/material";
+import {makeStyles} from "@mui/styles";
+import {truncateText} from "../utils/helpers.js";
 
-const truncateText = (text, length) =>
-  text.split(" ").slice(0, length).join(" ");
+const useStyles = makeStyles((theme) => ({
+    title: {
+        fontSize: "18px"
+    },
+    card: {
+        margin: "34px 8px 0 8px",
+        borderRadius: "8px"
+    },
+    text: {
+    },
+    previewContainer: {
+    },
+    image: {
+        width: "150px",
+        height: "100px",
+        objectFit: "cover"
+    }
+}))
 
-const useStyles = makeStyles({
-  title: {
-    fontSize: "18px"
-  }
-})
+const PostCard = ({text, embed, created_at, created_by}) => {
+    const classes = useStyles()
 
-const PostCard = ({ text, embed, created_at, created_by }) => {
-  const classes = useStyles()
+    return (
+        <Box className={classes.card}>
+            {embed && (
+                <Box display={"flex"} flexDirection={"row"} className={classes.previewContainer}>
+                    {embed?.image && (
+                        <img
+                            className={classes.image}
+                            src={embed.thumbnail_url}
+                            alt={embed.title}
+                        />
+                    )}
 
-  return (
-  <Box className="rounded overflow-hidden shadow-lg mt-4 bg-white ">
-    {embed && (
-      <Box className="flex row bg-gray-100">
-        {embed?.image && (
-          <img
-            className="w-[150px] h-[100px] object-cover"
-            src={embed.thumbnail_url}
-            alt={embed.title}
-          />
-        )}
+                    <Box display={"flex"} ml={1} py={1} alignItems={"center"}>
+                        <Box>
+                            <Typography fontSize={"18px"} className={classes.text}>
+                                <a target={"_blank"} rel="no-opener" href={embed.original_url}>
+                                    {embed.title}
+                                </a>
+                            </Typography>
 
-        <Box className="ml-4 flex items-center py-1">
-          <Box>
-            <a target={"_blank"} rel="no-opener" href={embed.original_url}>
-              <Typography className="font-semibold"> {embed.title} </Typography>
-            </a>
+                            <Typography className={classes.text}> {truncateText(embed.description, 10)}... </Typography>
+                        </Box>
+                    </Box>
 
-            <Typography> {truncateText(embed.description, 10)}... </Typography>
-          </Box>
+                    <Box fontSize={"24px"} mr={1} mt={1}>
+                        <Box className={classes.text}>
+                            <AiOutlineLink/>
+                        </Box>
+                    </Box>
+                </Box>
+            )}
+
+            <Box className="px-2 py-4">
+                <Typography fontSize={"20px"} mb={"8px"} className={classes.text}>{text}</Typography>
+
+                <Typography style={{opacity: .8}} className={classes.text}>
+                    Posted By <b> {created_by.display_name} </b> On{" "}
+                    <b>{new Date(created_at).toLocaleDateString()} </b>
+                </Typography>
+            </Box>
         </Box>
-
-        <Box className="ml-2 mr-2 mt-1 text-2xl">
-          <AiOutlineLink />
-        </Box>
-      </Box>
-    )}
-
-    <Box className="px-2 py-4">
-      <Typography className="text-xl mb-4  font-semibold ">{text}</Typography>
-
-      <Typography className="text-gray-500 mb-2">
-        Posted By <b> {created_by.display_name} </b> On{" "}
-        <b>{new Date(created_at).toLocaleDateString()} </b>
-      </Typography>
-    </Box>
-  </Box>
-)};
+    )
+};
 
 export default PostCard;

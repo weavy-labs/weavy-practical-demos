@@ -1,108 +1,111 @@
-import { useState } from "react";
-import { BsSend } from "react-icons/bs";
-import { useEffect } from "react";
-import { ApiClient } from "../api";
+import React, {useContext} from "react";
+import {BsSend} from "react-icons/bs";
 import PostCard from "../components/PostCard";
-import { Box } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import {Box} from "@mui/material";
+import {makeStyles,} from "@mui/styles";
 import Header from "../components/Header";
+import {AppContext} from "../state/app-context.jsx";
 
-const APP_ID = import.meta.env.VITE_APP_ID;
-const extractUrlFromText = (text) => text.match(/(https?:\/\/[^ ]*)/);
-
-const useStyles = makeStyles({
-  messagesContainer: {
-    height: "calc(100vh - 150px)",
-    overflow: "auto",
-  },
-});
+const useStyles = makeStyles((theme) => ({
+    messagesContainer: {
+        height: "calc(100vh - 170px)",
+        overflow: "auto",
+        border: "1px solid #000",
+        background: "#d4d4d8"
+    },
+    container: {
+        maxWidth: "650px",
+        margin: "auto",
+    },
+    messageWindow: {
+        padding: "0 12px"
+    },
+    messageInput: {
+        width: "100%",
+        padding: "12px",
+        outline: 0,
+    },
+    inputContainer: {
+    },
+    sendIcon: {
+        margin: "0 12px",
+        fontSize: "34px",
+        placeItems: "center",
+        "&:hover": {
+            cursor: "pointer"
+        }
+    },
+    formContainer: {
+        height: "60px",
+        width: "100%",
+        display: "flex",
+        marginBottom: "30px",
+        background: "#fff"
+    }
+}));
 
 function Home() {
-  const [post, setAvailablePosts] = useState(null);
-  const [message, setMessage] = useState("");
+    const {retrievedChats, submitChatMessage, chatMessageText, actionDispatcher} = useContext(AppContext)
+    const classes = useStyles();
 
-  useEffect(() => {
-    (async () => {
-      const postData = await ApiClient({ endpoint: `/apps/${APP_ID}/messages` });
-
-      setAvailablePosts(postData?.data);
-    })();
-  }, []);
-
-  const handleSubmit = async () => {
-    const extractedUrl = extractUrlFromText(message);
-    let embedId = null;
-
-    if (extractedUrl) {
-      const createEmbedData = await ApiClient({
-        endpoint: `/embeds`,
-        method: "POST",
-        body: {
-          url: extractedUrl[0],
-        },
-      });
-
-      embedId = createEmbedData?.id;
-    }
-
-    const createPostData = await ApiClient({
-      endpoint: `/apps/${APP_ID}/messages`,
-      method: "POST",
-      body: {
-        text: message,
-        embed_id: embedId,
-      },
-    });
-
-    setAvailablePosts([...post, createPostData]);
-    setMessage("");
-  };
-
-  const classes = useStyles();
-
-  return (
-    <Box
-      style={{ height: "100vh" }}
-      className="flex w-full bg-gray-100 h-full justify-center"
-    >
-      <Box className="max-w-[650px] shadow m-auto h-full bg-[white] w-full ">
-        <Header />
-
-        <Box className="px-6">
-          <Box className={classes.messagesContainer}>
-            {post && (
-              <ul>
-                {post.map(({ text, id, embed, created_at, created_by }) => (
-                  <li className="my-8" key={id}>
-                    <PostCard {...{ text, embed, created_at, created_by }} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Box>
-
-          <br />
-          <form className="border h-[60px] w-full flex">
-            <Box className="w-full bg-gray-100 flex items-center">
-              <input
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Enter A Message"
-                className="p-4 w-full"
-              />
-            </Box>
-
+    return (
+        <Box
+            height={"100vh"}
+            display={"flex"}
+            width={"100%"}
+            border={"1px solid #000"}
+            sx={{
+                bgcolor: "#e2e8f0",
+            }}
+            className={classes.page}
+            justifyContent={"center"}
+        >
             <Box
-              onClick={() => handleSubmit()}
-              className="flex mx-4 text-3xl items-center cursor-pointer"
+                height={"100%"}
+                width={"100%"}
+                className={classes.container}
             >
-              <BsSend />
+                <Header/>
+
+                <Box className={classes.messageWindow}>
+                    <Box className={classes.messagesContainer}>
+                        {retrievedChats && (
+                            <ul>
+                                {retrievedChats.map(({text, id, embed, created_at, created_by}) => (
+                                    <li className="my-8" key={id}>
+                                        <PostCard {...{text, embed, created_at, created_by}} />
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </Box>
+
+                    <br/>
+                    <form className={classes.formContainer}>
+                        <Box display={"flex"} alignItems={"center"} width={"100%"} className={classes.inputContainer}>
+                            <input
+                                value={chatMessageText}
+                                onChange={(e) => actionDispatcher(
+                                    "HANDLE_CHAT_MESSAGE",
+                                    {text: e.target.value}
+                                )}
+                                placeholder="Enter A Message"
+                                className={classes.messageInput}
+                            />
+                        </Box>
+
+                        <Box
+                            display={"flex"}
+                            onClick={() => submitChatMessage(chatMessageText)}
+                            className={classes.sendIcon}
+                        >
+                            <BsSend/>
+                        </Box>
+                    </form>
+                </Box>
             </Box>
-          </form>
         </Box>
-      </Box>
-    </Box>
-  );
+    );
 }
 
 export default Home;

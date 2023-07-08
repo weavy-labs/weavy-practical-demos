@@ -1,15 +1,15 @@
 import React, {useEffect, useReducer} from "react";
 import {ApiClient} from "../api.js";
 import {extractUrlFromText} from "../utils/helpers.js";
+import {useMediaQuery} from "@mui/material";
 
 const APP_ID = import.meta.env.VITE_APP_ID;
 
 const initialState = {
-    displayMode: "dark",
+    displayMode: "light",
+    toggleDisplayMode: () => {},
 
     chatMessageText: "",
-    toggleDisplayMode: () => {
-    },
     submitChatMessage: async () => {
     },
     actionDispatcher: () => {
@@ -69,9 +69,12 @@ export const AppProvider = ({children}) => {
             "TOGGLE_DISPLAY_MODE",
             {
                 displayMode: state.displayMode === "light" ? "dark" : "light"
-            },
-        );
+            });
     }
+
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+    React.useEffect(toggleDisplayMode, [prefersDarkMode])
 
     useEffect(() => {
         (async () => {

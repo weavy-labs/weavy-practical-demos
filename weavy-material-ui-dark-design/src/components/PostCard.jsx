@@ -2,9 +2,7 @@ import React from "react";
 import {AiOutlineLink} from "react-icons/ai";
 import {Box, Typography} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-
-const truncateText = (text, length) =>
-    text.split(" ").slice(0, length).join(" ");
+import {truncateText} from "../utils/helpers.js";
 
 const useStyles = makeStyles((theme) => ({
     title: {

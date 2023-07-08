@@ -1,7 +1,6 @@
-# Adding URL Previews to Chat
+# Weavy Chat Material UI Dark Theme
 
-This demo projects provides an insight on how to build a Chat application that is powered by the Weavy API and displays a URL preview through the use of a Weavy Embed entity. 
-Read the Adding URL Previews to Chat article published on the Weavy developer blog. The chat application is styled using TailwindCSS. 
+This demo application demonstrates how to implement dark mode functionality in a React.js application styled uding Material UI. The application state is managed using the React Context API. 
 
 ## Steps To Run: 
 
@@ -12,4 +11,12 @@ Read the Adding URL Previews to Chat article published on the Weavy developer bl
 VITE_WEAVY_DOMAIN="WEAVY_DOMAIN"
 VITE_WEAVY_ACCESS_TOKEN="USER_TOKEN"
 VITE_APP_ID="WEAVY_CHAT_APP_ID"
+```
+
+Execute two commands below to install the application dependencies and start the local Vite server;
+
+```bash
+yarn install 
+
+yarn dev
 ```

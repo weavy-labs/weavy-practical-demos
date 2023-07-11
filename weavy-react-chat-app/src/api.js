@@ -1,5 +1,5 @@
 const DOMAIN = import.meta.env.VITE_WEAVY_DOMAIN;
-const KEY = import.meta.env.VITE_USER_TOKEN;
+const KEY = import.meta.env.VITE_WEAVY_ACCESS_TOKEN;
 
 export const ApiClient = async ({ endpoint, method, body }) => {
   if (!DOMAIN || !KEY) {

@@ -80,8 +80,9 @@ export const AppProvider = ({children}) => {
         (async () => {
             const chats = await fetchChats()
 
-            actionDispatcher("HANDLE_CHATS", { chats },
-            );
+            if (Array.isArray(chats)) {
+                actionDispatcher("HANDLE_CHATS", { chats });
+            }
         })();
     }, []);
 
@@ -109,6 +110,12 @@ export const AppProvider = ({children}) => {
                 embed_id: embedId,
             },
         });
+
+        if (!createPostData.created_at) {
+            console.error("Unable to submit message:", createPostData.detail)
+
+            return
+        }
 
         actionDispatcher(
             "HANDLE_CHATS",
